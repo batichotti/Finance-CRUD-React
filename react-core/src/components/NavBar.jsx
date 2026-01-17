@@ -1,4 +1,4 @@
-export default function NavBar({ onOpen, onSearch }){
+export default function NavBar({ onOpen, onSearch, onRefresh }){
     const handleSearchChange = (event) => {
         onSearch(event.target.value);
     };
@@ -16,6 +16,7 @@ export default function NavBar({ onOpen, onSearch }){
             </div>
         </div>
         <div className="navbar-end">
+            <a className="btn btn-outline mr-2" onClick={onRefresh}>♻️</a>
             <a className="btn btn-primary" onClick={onOpen}>Nova Nota</a>
         </div>
         </div>

@@ -1,12 +1,25 @@
-import { useState } from "react" 
+import { useEffect, useState } from "react" 
 
-export default function ModalForm({ isOpen, onClose, mode, onSubmit }) {
+export default function ModalForm({ isOpen, onClose, mode, onSubmit, itemData }) {
 
     const [numero, setNumero] = useState('');
     const [cnpj, setCnpj] = useState('');
     const [descricao, setDescricao] = useState('');
     const [data, setData] = useState('');
     const [valor, setValor] = useState('');
+
+    useEffect(() => {
+        if (mode === 'edit' && itemData) {
+            setNumero(itemData.nota_numero || '');
+            setCnpj(itemData.nota_cnpj || '');
+            setDescricao(itemData.nota_descricao || '');
+            const parsedDate = itemData.nota_data ? new Date(itemData.nota_data) : null;
+            setData(parsedDate ? parsedDate.toISOString().split('T')[0] : '');
+            setValor(itemData.nota_valor ?? '');
+        } else if (mode === 'add') {
+            handleReset();
+        }
+    }, [mode, itemData]);
 
     const handleReset = () => {
         setNumero('');
@@ -16,8 +29,15 @@ export default function ModalForm({ isOpen, onClose, mode, onSubmit }) {
         setValor('');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        try {
+            const numericCnpj = cnpj.replace(/\D/g, "");
+            const itemData = {numero, cnpj: numericCnpj, descricao, data: new Date(data), valor: parseFloat(valor)};
+            await onSubmit(itemData);
+        } catch (e) {
+            console.error("Error adding item", e.message)
+        }
         onClose();
     }
 
@@ -50,6 +70,7 @@ export default function ModalForm({ isOpen, onClose, mode, onSubmit }) {
                                 placeholder="Informe o número"
                                 value={numero}
                                 inputMode="numeric"
+                                maxLength={44}
                                 onChange={(e) => {
                                     const value = e.target.value;
 
