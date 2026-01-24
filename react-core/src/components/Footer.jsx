@@ -14,13 +14,13 @@ export default function Footer({ totals }) {
         <>
         <footer className="footer sm:footer-horizontal bg-neutral text-white p-10 fixed bottom-0 left-0 right-0">
         <nav>
-            <h6 className="footer-title text-x font-semibold">Acumulado</h6>
+            <h6 className="footer-title text-xl font-bold text-red-300">Acumulado</h6>
         </nav>
         <nav>
-            <h6 className="footer-title text-x font-semibold">Mensal: {monthlyTotal}</h6>
+            <h6 className="footer-title text-xl font-bold text-red-300" >Mensal: {monthlyTotal}</h6>
         </nav>
         <nav>
-            <h6 className="footer-title text-x font-semibold">Anual: {annualTotal}</h6>
+            <h6 className="footer-title text-xl font-bold text-red-300">Anual: {annualTotal}</h6>
         </nav>
         </footer>
         </>

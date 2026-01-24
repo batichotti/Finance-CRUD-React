@@ -33,17 +33,26 @@ export default function TableList({ searchTerm, onEdit, onDelete, refreshKey, on
     };
 
     useEffect(() => {
+        let isMounted = true;
         const fetchData = async () => {
             try {
                 const response = await axios.get('http://localhost:3001/api/notas');
-                setTableData(response.data);
-                setError(null);
+                if (isMounted) {
+                    setTableData(response.data);
+                    setError(null);
+                }
             } catch (err) {
-                setError(err.message);
+                if (isMounted) {
+                    setError(err.message);
+                }
             }
         };
 
         fetchData();
+
+        return () => {
+            isMounted = false;
+        };
     }, [refreshKey]);
 
     useEffect(() => {
@@ -51,6 +60,20 @@ export default function TableList({ searchTerm, onEdit, onDelete, refreshKey, on
             onTotalsUpdate(calculateTotals(tableData));
         }
     }, [tableData, onTotalsUpdate]);
+
+    const handleDelete = async (id, item) => {
+        if (window.confirm('Tem certeza que deseja deletar este item?')) {
+            await onDelete(id);
+            // Refetch dados após deleção
+            try {
+                const response = await axios.get('http://localhost:3001/api/notas');
+                setTableData(response.data);
+                setError(null);
+            } catch (err) {
+                setError(err.message);
+            }
+        }
+    };
 
     const loweredSearch = searchTerm.toLowerCase();
     const filteredData = tableData.filter((item) =>
@@ -87,7 +110,7 @@ export default function TableList({ searchTerm, onEdit, onDelete, refreshKey, on
                 <td>{item.nota_valor}</td>
                 <td>{item.nota_descricao}</td>
                 <td><button onClick={() => onEdit(item)} className="btn btn-secondary w-20">Atualizar</button></td>
-                <td><button onClick={() => onDelete(item.nota_id)} className="btn btn-accent w-20">Deletar</button></td>
+                <td><button onClick={() => handleDelete(item.nota_id, item)} className="btn btn-accent w-20">Deletar</button></td>
                 </tr>
             ))}
 

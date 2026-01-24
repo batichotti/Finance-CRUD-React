@@ -13,9 +13,9 @@ export const getItems = async(req, res) => {
 export const createItem = async(req, res) => {
     try {
         const itemData = req.body;
-        const newitem = await itemService.createItem(itemData);
+        const newItem = await itemService.createItem(itemData);
 
-        res.status(200).json(newitem);
+        res.status(200).json(newItem);
     } catch (err){
         console.error('Error creating items:', err);
         res.status(500).json({ message: 'Internal Server Error' });

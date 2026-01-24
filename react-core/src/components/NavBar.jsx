@@ -8,7 +8,7 @@ export default function NavBar({ onOpen, onSearch, onRefresh }){
         <div className="navbar bg-base-100 shadow-sm">
         <div className="navbar-start">
 
-            <a className="btn btn-ghost text-xl">Controle de Estoque</a>
+            <a className="btn btn-ghost text-xl">Controle Financeiro</a>
         </div>
         <div className="navbar-center">
             <div className="form-control">
