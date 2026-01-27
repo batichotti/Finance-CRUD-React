@@ -16,7 +16,6 @@ export default function TableList({ searchTerm, onEdit, onDelete, refreshKey, on
         data.forEach((item) => {
             const parsedValue = Number(item.nota_valor) || 0;
 
-            // Normalize date to local time to avoid off-by-one month/year due to timezone
             const rawDate = new Date(item.nota_data);
             if (Number.isNaN(rawDate.getTime())) return;
             const date = new Date(rawDate.getTime() + rawDate.getTimezoneOffset() * 60000);
