@@ -1,4 +1,4 @@
-# Electron-CRUD
+# Finance CRUD React
 
 A full-stack desktop application for managing companies (empresas) and items with a Node.js/Express backend and an Electron + React frontend.
 
